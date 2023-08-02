@@ -71,7 +71,7 @@ For the next part of the analysis, we'll be looking at the annual top scoring co
   geom_point() +
   labs(x = 'Years', 
        y = 'Total Cupping Points (mean)', 
-       title = 'Global Mean Cuping Scores between 2010 to 2018')
+       title = 'Global Mean Cupping Scores between 2010 to 2018')
 ```
 
 Looking at the chart above, we could see a drop in mean score. Doing some additional research, I discovered 2012 was 'A year of extreme weather'. This included: droughts and flooding in regions of Brazil and Africa, and wildfires in Chile. Additional extreme weather events also took place in 2017. Therefore, this could be a contributing factor to the quality of coffee beans globally.
