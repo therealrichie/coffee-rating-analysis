@@ -31,3 +31,47 @@ coffee_ratings_cd <- coffee_ratings %>%
   filter(altitude_mean_meters > 0)
 ```
 
+
+### Top 20 Countries by Total Cupping Points
+```{r Top Countries by Total Cupping Points}
+top_countries <- coffee_ratings_cd %>%
+  mutate(
+    country_of_origin  = country_of_origin %>%
+      fct_na_value_to_level() %>%
+      fct_lump(n = 20) %>%
+      fct_reorder(total_cup_points)) %>% 
+  filter(total_cup_points > 0)
+
+  ggplot(top_countries, aes(y = country_of_origin, 
+                            x = total_cup_points)) +
+  geom_boxplot(color = '#6F4E37') +
+  labs(y = NULL,
+       x = 'Total Cup Points',
+       title = 'Top 20 Countries by Total Cupping Points')
+```
+
+Total cup points: the sum of the points given in each category: aroma, flavor, aftertaste, acidity, body, balance, uniformity, clean cup and, sweetness.
+
+The box plot above shows the distribution of the top 20 countries by total cup points in descending order, including both Arabica and Robusta beans. It is no surprise to find regions in Africa and South America to be highly rated and at the top. United States has the highest total cup points, however it's important to note that it is skewed and greater distribution of points.
+
+
+### Coffee Quality Between 2010 to 2018 
+For the next part of the analysis, we'll be looking at the annual top scoring coffees. In order to get the year, the extract function was used to pull the year from the 'grading_date' column and then converted into an integer. This step was added to the cleaning stage. 
+```{r Global Mean Points Over Time}
+  coffee_ratings_cd %>%
+  # Used to extract year from grading_year. Remove set to false keeps extracted column
+  extract(grading_date, 'grading_year', '(\\d\\d\\d\\d)', convert = TRUE, remove = FALSE) %>% 
+  group_by(grading_year) %>%
+  filter(grading_year %in% c(2010:2018)) %>%
+  summarise(points = mean(total_cup_points)) %>% 
+
+  ggplot(aes(x = grading_year, 
+             y = points)) +
+  geom_line(colour = '#6f4e37') +
+  geom_point() +
+  labs(x = 'Years', 
+       y = 'Total Cupping Points (mean)', 
+       title = 'Global Mean Cuping Scores between 2010 to 2018')
+```
+
+Looking at the chart above, we could see a drop in mean score. Doing some additional research, I discovered 2012 was 'A year of extreme weather'. This included: droughts and flooding in regions of Brazil and Africa, and wildfires in Chile. Additional extreme weather events also took place in 2017. Therefore, this could be a contributing factor to the quality of coffee beans globally.
