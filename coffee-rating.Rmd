@@ -75,3 +75,24 @@ For the next part of the analysis, we'll be looking at the annual top scoring co
 ```
 
 Looking at the chart above, we could see a drop in mean score. Doing some additional research, I discovered 2012 was 'A year of extreme weather'. This included: droughts and flooding in regions of Brazil and Africa, and wildfires in Chile. Additional extreme weather events also took place in 2017. Therefore, this could be a contributing factor to the quality of coffee beans globally.
+
+
+### Altitude and Quality of Coffee
+```{r Altitude and Quality}
+altitude_quality <- coffee_ratings_cd %>% 
+  filter(altitude_mean_meters < 5000)
+
+  ggplot(altitude_quality, aes(x = altitude_mean_meters, 
+                               y = total_cup_points)) +
+  geom_point(colour = '#6f4e37') +
+  geom_smooth(method = 'lm') +
+  labs(x = 'Mean Altitude (m)', 
+       y = 'Total Cup Points', 
+       title = 'Altitude and Quality')
+```
+
+
+```{r Correlation: Altitude and Quality Test}
+cor.test(altitude_quality$total_cup_points, altitude_quality$altitude_mean_meters)
+```
+To confirm the relationship of the two variables being altitude and quality of coffee, a correlation test was ran. From this test, we could see a very small p-value of 0.0003 and the correlation value of 0.107889 suggesting that there is a statistical significant relationship, but weak positive correlation between the total cupping points and altitude. Other factors (weather, soil, etc.) play a bigger role in quality. 
